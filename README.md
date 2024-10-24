@@ -1,3 +1,3 @@
 # ruletest
 
-1
+2
