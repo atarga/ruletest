@@ -1,0 +1,27 @@
+name: Check Required Approvals
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize, ready_for_review, review_requested]
+
+jobs:
+  check-approvals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        
+      - name: Check approvals
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: python approval_check.py
